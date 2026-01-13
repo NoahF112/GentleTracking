@@ -8,7 +8,7 @@ Main features:
 
 * Dataset support including preprocessing for AMASS and LAFAN.
 
-A **demo** of the pretrained policies, shows a single model generalizing across diverse and highly dynamic motions, is available [here](motion-tracking.axell.top).
+A **demo** of the pretrained policies, shows a single model generalizing across diverse and highly dynamic motions, is available [here](https://motion-tracking.axell.top).
 
 Instructions for **real-robot deployment** and the use of **pretrained models** on new motion sequences are available in `sim2real` folder.
 
