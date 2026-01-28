@@ -4,7 +4,7 @@ set -euo pipefail
 # ===== Global Configuration =====
 # PROJECT="axell-wppr/gentle_humanoid"
 PROJECT="axell-wppr/motion_tracking"
-NPROC=4
+NPROC=1
 SCRIPT="scripts/train.py"
 
 run_pipeline() {
