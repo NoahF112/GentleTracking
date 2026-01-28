@@ -195,6 +195,7 @@ scripts/videos/
 memcache/
 memcache_new/
 .vscode
+.nvim/
 unitree_sdk2_python-master
 sim2sim/real_g1/ckpts
 sim2sim/real_g1/ckpts_old
@@ -202,4 +203,8 @@ sim2sim/real_g1/data
 sim2sim/real_g1/plot
 sim2sim/real_g1/*.npy
 motion.npy
-dataset
+dataset*
+GMR/
+IsaacLab/
+.envrc
+.netrc
