@@ -40,10 +40,10 @@ command:
   dataset:
     mem_paths:
       - lafan_all
-      - amass_all
+      # - amass_all
     path_weights:
-      - 0.4
-      - 0.6
+      - 1.0
+      # - 0.6
   dataset_extra_keys: []
   future_steps: [0, 2, 4, 8, 16]
   cum_root_pos_scale: 1.5

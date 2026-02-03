@@ -6,6 +6,8 @@ set -euo pipefail
 PROJECT="axell-wppr/motion_tracking"
 NPROC=1
 SCRIPT="scripts/train.py"
+curr_date=$(date +"%Y%m%d")
+RUN_NAME=${1:-$curr_date}
 
 run_pipeline() {
   local TASK="$1" TAG="$2" SUFFIX="$3"
@@ -38,7 +40,8 @@ run_pipeline() {
   echo ">>> ${cmd[*]}"; "${cmd[@]}"
 }
 
-run_pipeline "G1/G1_tracking" "track" "0112.3"
+# run_pipeline "G1/G1_tracking" "track" "0112.3"
+run_pipeline "G1/G1_tracking" "track" "${RUN_NAME}"
 
 # run_pipeline "G1/G1_gentle" "gentle" "1215"
 # run_pipeline "G1/G1_no_force" "noforce" "1215"
