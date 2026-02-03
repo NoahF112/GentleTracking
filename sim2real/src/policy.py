@@ -233,8 +233,10 @@ class TrackingPolicyRaw(Policy):
             t0, t1 = int(mc.start), int(mc.end)
 
             data = np.load(path, allow_pickle=True)
-            if not isinstance(data, np.lib.npyio.NpzFile):
-                raise ValueError(f"[TrackingPolicyRaw] Only .npz is supported: {path}")
+            # if not isinstance(data, np.lib.npyio.NpzFile):
+            #     print("[DEBUG] path repr =", repr(path))
+            #     print("[DEBUG] endswith .npz =", str(path).endswith(".npz"))
+            #     raise ValueError(f"[TrackingPolicyRaw] Only .npz is supported: {path}")
 
             joint_pos = data["dof_pos"][t0:t1].astype(np.float32)
             root_pos = data["root_pos"][t0:t1].astype(np.float32)

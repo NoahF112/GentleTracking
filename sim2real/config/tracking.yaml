@@ -1,4 +1,6 @@
-policy_path: "assets/ckpts/G1TRACKING-AMASS/policy.onnx"
+# policy_path: "assets/ckpts/G1TRACKING-AMASS/policy.onnx"
+# policy_path: "assets/ckpts/G1TRACKING-01-30_20-57_adapt/policy.onnx"
+policy_path: "assets/ckpts/G1TRACKING-01-30_20-21/policy.onnx"
 # policy_path: "assets/ckpts/G1TRACKING-LAFAN/policy.onnx" # Action scale needs to be adjusted when using LAFAN model.
 lowstate_alpha: 1.0
 
@@ -53,6 +55,34 @@ motions:
     end: -1
   - name: "walk3_subject1"
     path: "assets/data/walk3_subject1.npz"
+    start: 0
+    end: -1
+  - name: "A5"
+    path: "assets/data/A5_-_pick_up_box_stageii.npz"
+    start: 0
+    end: -1
+  - name: "Act confused, looking around trying to find where _1768860819663_3_smplx_vector_robot.npz"
+    path: "assets/data/motion_generation/generated_traj/gmr_output_unitreeg1_npz_rename/001.npz"
+    start: 0
+    end: -1
+  - name: "Perform a Kung Fu kick_1768860819663_8_smplx_vector_robot.npz"
+    path: "assets/data/motion_generation/generated_traj/gmr_output_unitreeg1_npz_rename/009.npz"
+    start: 0
+    end: -1
+  - name: "Walk like a fashion model on a runway_1768860819663_4_smplx_vector_robot.npz"
+    path: "assets/data/motion_generation/generated_traj/gmr_output_unitreeg1_npz_rename/010.npz"
+    start: 0
+    end: -1
+  - name: "Walk stealthily like a thief, trying not to make n_1768860819663_17_smplx_vector_robot.npz"
+    path: "assets/data/motion_generation/generated_traj/gmr_output_unitreeg1_npz_rename/012.npz"
+    start: 0
+    end: -1
+  - name: "gesture_etc-07-over_stretch-shiono_stageii_robot"
+    path: "assets/data/motion_generation/humanml3d_traj/gmr_output_unitreeg1_npz/gesture_etc-07-over_stretch-shiono_stageii_robot.npz"
+    start: 0
+    end: -1
+  - name: "Jog_1_stageii_robot"
+    path: "assets/data/motion_generation/humanml3d_traj/gmr_output_unitreeg1_npz/Jog_1_stageii_robot.npz"
     start: 0
     end: -1
 
