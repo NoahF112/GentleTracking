@@ -1,12 +1,17 @@
 # policy_path: "assets/ckpts/G1TRACKING-AMASS/policy.onnx"
 # policy_path: "assets/ckpts/G1TRACKING-01-30_20-57_adapt/policy.onnx"
 policy_path: "assets/ckpts/G1TRACKING-01-30_20-21/policy.onnx"
+# policy_path: "assets/ckpts/G1TRACKING-02-05_07-26/policy.onnx"
 # policy_path: "assets/ckpts/G1TRACKING-LAFAN/policy.onnx" # Action scale needs to be adjusted when using LAFAN model.
 lowstate_alpha: 1.0
 
 motions:
   - name: "dance1_subject1"
     path: "assets/data/dance1_subject1.npz"
+    start: 0
+    end: -1
+  - name: "dance1_subject2"
+    path: "assets/data/dance1_subject2.npz"
     start: 0
     end: -1
   - name: "dance2_subject1"
@@ -57,8 +62,16 @@ motions:
     path: "assets/data/walk3_subject1.npz"
     start: 0
     end: -1
-  - name: "A5"
+  - name: "AMASS-A5-pick_up_box"
     path: "assets/data/A5_-_pick_up_box_stageii.npz"
+    start: 0
+    end: -1
+  - name: "AMASS-A14_stand_to_skip"
+    path: "assets/data/A14_-_stand_to_skip_stageii.npz"
+    start: 0
+    end: -1
+  - name: "AMASS-C10_-__run_backwards_stop_run_forward_stageii"
+    path: "assets/data/C10_-__run_backwards_stop_run_forward_stageii.npz"
     start: 0
     end: -1
   - name: "Act confused, looking around trying to find where _1768860819663_3_smplx_vector_robot.npz"
