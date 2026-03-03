@@ -217,3 +217,289 @@ G1_COL_FULL.spawn.articulation_props.enabled_self_collisions = False
 
 G1_COL_FULL_SELF = copy.deepcopy(G1_COL_FULL)
 G1_COL_FULL_SELF.spawn.articulation_props.enabled_self_collisions = True
+
+#######################################
+
+# ARMATURE_RS_06 = 0.012
+# ARMATURE_RS_03 = 0.02
+# ARMATURE_RS_00 = 0.001
+# 
+# NATURAL_FREQ = 10 * 2.0 * 3.1415926535  # 10Hz
+# DAMPING_RATIO = 2.0
+# 
+# STIFFNESS_RS_06 = ARMATURE_RS_06 * NATURAL_FREQ**2
+# STIFFNESS_RS_03 = ARMATURE_RS_03 * NATURAL_FREQ**2
+# STIFFNESS_RS_00 = ARMATURE_RS_00 * NATURAL_FREQ**2
+# 
+# DAMPING_RS_06 = 2.0 * DAMPING_RATIO * ARMATURE_RS_06 * NATURAL_FREQ
+# DAMPING_RS_03 = 2.0 * DAMPING_RATIO * ARMATURE_RS_03 * NATURAL_FREQ
+# DAMPING_RS_00 = 2.0 * DAMPING_RATIO * ARMATURE_RS_00 * NATURAL_FREQ
+
+# Armature values from y1_v2.xml
+ARMATURE_WAIST_YAW = 0.0576489375
+ARMATURE_HIP_PITCH = 0.031752
+ARMATURE_HIP_ROLL = 0.0576489375
+ARMATURE_HIP_YAW = 0.0576489375
+ARMATURE_KNEE = 0.065
+ARMATURE_ANKLE_PITCH = 0.023328
+ARMATURE_ANKLE_ROLL = 0.023328
+ARMATURE_SHOULDER_PITCH = 0.032
+ARMATURE_SHOULDER_ROLL = 0.032
+ARMATURE_SHOULDER_YAW = 0.002
+ARMATURE_ELBOW = 0.032
+ARMATURE_WRIST_ROLL = 0.0007
+ARMATURE_WRIST_PITCH = 0.0007
+ARMATURE_WRIST_YAW = 0.0007
+
+ARMATURE_FOR_PD_WAIST_YAW = 0.5 * 0.0576489375
+ARMATURE_FOR_PD_HIP_PITCH = 0.5 * 0.031752
+ARMATURE_FOR_PD_HIP_ROLL = 0.5 * 0.0576489375
+ARMATURE_FOR_PD_HIP_YAW = 0.5 * 0.0576489375
+ARMATURE_FOR_PD_KNEE = 0.5 * 0.065
+ARMATURE_FOR_PD_ANKLE_PITCH = 0.5 * 0.023328
+ARMATURE_FOR_PD_ANKLE_ROLL = 0.5 * 0.023328
+ARMATURE_FOR_PD_SHOULDER_PITCH = 0.5 * 0.032
+ARMATURE_FOR_PD_SHOULDER_ROLL = 0.5 * 0.032
+ARMATURE_FOR_PD_SHOULDER_YAW = 0.002
+ARMATURE_FOR_PD_ELBOW = 0.5 * 0.032
+ARMATURE_FOR_PD_WRIST_ROLL = 0.0007
+ARMATURE_FOR_PD_WRIST_PITCH = 0.0007
+ARMATURE_FOR_PD_WRIST_YAW = 0.0007
+
+NATURAL_FREQ = 10 * 2.0 * 3.1415926535  # 10Hz
+DAMPING_RATIO = 2.0
+
+# Stiffness and damping calculated from armature values
+STIFFNESS_WAIST_YAW = ARMATURE_FOR_PD_WAIST_YAW * NATURAL_FREQ**2  # 227.588883
+STIFFNESS_HIP_PITCH = ARMATURE_FOR_PD_HIP_PITCH * NATURAL_FREQ**2  # 125.351872
+STIFFNESS_HIP_ROLL = ARMATURE_FOR_PD_HIP_ROLL * NATURAL_FREQ**2  # 227.588883
+STIFFNESS_HIP_YAW = ARMATURE_FOR_PD_HIP_YAW * NATURAL_FREQ**2  # 227.588883
+STIFFNESS_KNEE = ARMATURE_FOR_PD_KNEE * NATURAL_FREQ**2  # 256.609714
+STIFFNESS_ANKLE_PITCH = ARMATURE_FOR_PD_ANKLE_PITCH * NATURAL_FREQ**2  # 92.095253
+STIFFNESS_ANKLE_ROLL = ARMATURE_FOR_PD_ANKLE_ROLL * NATURAL_FREQ**2  # 92.095253
+STIFFNESS_SHOULDER_PITCH = ARMATURE_FOR_PD_SHOULDER_PITCH * NATURAL_FREQ**2  # 126.330936
+STIFFNESS_SHOULDER_ROLL = ARMATURE_FOR_PD_SHOULDER_ROLL * NATURAL_FREQ**2  # 126.330936
+STIFFNESS_SHOULDER_YAW = ARMATURE_FOR_PD_SHOULDER_YAW * NATURAL_FREQ**2  # 7.895684
+STIFFNESS_ELBOW = ARMATURE_FOR_PD_ELBOW * NATURAL_FREQ**2  # 126.330936
+STIFFNESS_WRIST_ROLL = ARMATURE_FOR_PD_WRIST_ROLL * NATURAL_FREQ**2  # 2.763489
+STIFFNESS_WRIST_PITCH = ARMATURE_FOR_PD_WRIST_PITCH * NATURAL_FREQ**2  # 2.763489
+STIFFNESS_WRIST_YAW = ARMATURE_FOR_PD_WRIST_YAW * NATURAL_FREQ**2  # 2.763489
+
+DAMPING_WAIST_YAW = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_WAIST_YAW * NATURAL_FREQ  # 14.488758
+DAMPING_HIP_PITCH = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_HIP_PITCH * NATURAL_FREQ  # 7.980148
+DAMPING_HIP_ROLL = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_HIP_ROLL * NATURAL_FREQ  # 14.488758
+DAMPING_HIP_YAW = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_HIP_YAW * NATURAL_FREQ  # 14.488758
+DAMPING_KNEE = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_KNEE * NATURAL_FREQ  # 16.336282
+DAMPING_ANKLE_PITCH = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_ANKLE_PITCH * NATURAL_FREQ  # 5.862966
+DAMPING_ANKLE_ROLL = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_ANKLE_ROLL * NATURAL_FREQ  # 5.862966
+DAMPING_SHOULDER_PITCH = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_SHOULDER_PITCH * NATURAL_FREQ  # 8.042477
+DAMPING_SHOULDER_ROLL = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_SHOULDER_ROLL * NATURAL_FREQ  # 8.042477
+DAMPING_SHOULDER_YAW = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_SHOULDER_YAW * NATURAL_FREQ  # 0.502655
+DAMPING_ELBOW = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_ELBOW * NATURAL_FREQ  # 8.042477
+DAMPING_WRIST_ROLL = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_WRIST_ROLL * NATURAL_FREQ  # 0.175929
+DAMPING_WRIST_PITCH = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_WRIST_PITCH * NATURAL_FREQ  # 0.175929
+DAMPING_WRIST_YAW = 2.0 * DAMPING_RATIO * ARMATURE_FOR_PD_WRIST_YAW * NATURAL_FREQ  # 0.175929
+
+Y1_CFG = ArticulationCfg(
+    spawn=sim_utils.UsdFileCfg(
+        usd_path=f"{ASSET_PATH}/Y1_v2/y1_v2.usd",
+        activate_contact_sensors=True,
+        rigid_props=sim_utils.RigidBodyPropertiesCfg(
+            disable_gravity=False,
+            retain_accelerations=False,
+            linear_damping=0.0,
+            angular_damping=0.0,
+            max_linear_velocity=1000.0,
+            max_angular_velocity=1000.0,
+            max_depenetration_velocity=1.0,
+        ),
+        articulation_props=sim_utils.ArticulationRootPropertiesCfg(
+            enabled_self_collisions=False,
+            solver_position_iteration_count=8,
+            solver_velocity_iteration_count=4
+        ),
+    ),
+
+    # TO BE CHANGED
+    init_state=ArticulationCfg.InitialStateCfg(
+        pos=(0.0, 0.0, 0.48),
+        joint_pos={
+            'waist_yaw_joint': 0.,
+            
+            'left_hip_pitch_joint': 0.0,
+            'left_hip_roll_joint': 0.,
+            'left_hip_yaw_joint': 0.,
+            'left_knee_joint': 0.0,
+            'left_ankle_pitch_joint': 0.0,
+            'left_ankle_roll_joint': 0.0,
+
+            'right_hip_pitch_joint': 0.0,
+            'right_hip_roll_joint': 0.,
+            'right_hip_yaw_joint': 0.,
+            'right_knee_joint': 0.0,
+            'right_ankle_pitch_joint': 0.0,
+            'right_ankle_roll_joint': 0.0,
+
+            'left_shoulder_pitch_joint': 0.,
+            'left_shoulder_roll_joint': 0.,
+            'left_shoulder_yaw_joint': 0.,
+            'left_elbow_joint': 1.55,
+            'left_wrist_pitch_joint': 0.,
+            
+            'right_shoulder_pitch_joint': 0.,
+            'right_shoulder_roll_joint': 0.,
+            'right_shoulder_yaw_joint': 0.,
+            'right_elbow_joint': 1.55,
+            'right_wrist_pitch_joint': 0.,
+        },
+        joint_vel={".*": 0.0},
+    ),
+    soft_joint_pos_limit_factor=0.9,
+    actuators={
+        "legs": ImplicitActuatorCfg(
+            joint_names_expr=[
+                ".*_hip_pitch_joint",
+                ".*_hip_roll_joint",
+                ".*_hip_yaw_joint",
+                ".*_knee_joint",
+            ],
+            effort_limit_sim={
+                ".*_hip_pitch_joint": 60.0,
+                ".*_hip_roll_joint": 36.0,
+                ".*_hip_yaw_joint": 36.0,
+                ".*_knee_joint": 60.0,
+            },
+            velocity_limit_sim={
+                ".*_hip_pitch_joint": 16.5,
+                ".*_hip_roll_joint": 11,
+                ".*_hip_yaw_joint": 11,
+                ".*_knee_joint": 16.5,
+            },
+            stiffness={
+                ".*_hip_pitch_joint": STIFFNESS_HIP_PITCH,
+                ".*_hip_roll_joint": STIFFNESS_HIP_ROLL,
+                ".*_hip_yaw_joint": STIFFNESS_HIP_YAW,
+                ".*_knee_joint": STIFFNESS_KNEE,
+            },
+            damping={
+                ".*_hip_pitch_joint": DAMPING_HIP_PITCH,
+                ".*_hip_roll_joint": DAMPING_HIP_ROLL,
+                ".*_hip_yaw_joint": DAMPING_HIP_YAW,
+                ".*_knee_joint": DAMPING_KNEE,
+            },
+            armature={
+                ".*_hip_pitch_joint": ARMATURE_FOR_PD_HIP_PITCH,
+                ".*_hip_roll_joint": ARMATURE_FOR_PD_HIP_ROLL,
+                ".*_hip_yaw_joint": ARMATURE_FOR_PD_HIP_YAW,
+                ".*_knee_joint": ARMATURE_FOR_PD_KNEE,
+            },
+        ),
+        "feet": ImplicitActuatorCfg(
+            joint_names_expr=[".*_ankle_pitch_joint", ".*_ankle_roll_joint"],
+            effort_limit_sim={
+                ".*_ankle_pitch_joint": 36.0,
+                ".*_ankle_roll_joint": 14.0,
+            },
+            velocity_limit_sim={
+                ".*_ankle_pitch_joint": 11,
+                ".*_ankle_roll_joint": 16,
+            },
+            stiffness={
+                ".*_ankle_pitch_joint": STIFFNESS_ANKLE_PITCH,
+                ".*_ankle_roll_joint": STIFFNESS_ANKLE_ROLL,
+            },
+            damping={
+                ".*_ankle_pitch_joint": DAMPING_ANKLE_PITCH,
+                ".*_ankle_roll_joint": DAMPING_ANKLE_ROLL,
+            },
+            armature={
+                ".*_ankle_pitch_joint": ARMATURE_FOR_PD_ANKLE_PITCH,
+                ".*_ankle_roll_joint": ARMATURE_FOR_PD_ANKLE_ROLL,
+            },
+        ),
+        "waist": ImplicitActuatorCfg(
+            effort_limit_sim=36.0,
+            velocity_limit_sim=11,
+            joint_names_expr=["waist_yaw_joint"],
+            stiffness=STIFFNESS_WAIST_YAW,
+            damping=DAMPING_WAIST_YAW,
+            armature=ARMATURE_FOR_PD_WAIST_YAW,
+        ),
+        "arms": ImplicitActuatorCfg(
+            joint_names_expr=[
+                ".*_shoulder_pitch_joint",
+                ".*_shoulder_roll_joint",
+                ".*_shoulder_yaw_joint",
+                ".*_elbow_joint",
+                ".*_wrist_pitch_joint",
+                ".*_wrist_roll_joint",
+                ".*_wrist_yaw_joint",
+            ],
+            effort_limit_sim=14.0,
+            velocity_limit_sim=16,
+            stiffness={
+                ".*_shoulder_pitch_joint": STIFFNESS_SHOULDER_PITCH,
+                ".*_shoulder_roll_joint": STIFFNESS_SHOULDER_ROLL,
+                ".*_shoulder_yaw_joint": STIFFNESS_SHOULDER_YAW,
+                ".*_elbow_joint": STIFFNESS_ELBOW,
+                ".*_wrist_yaw_joint": STIFFNESS_WRIST_YAW,
+                ".*_wrist_roll_joint": STIFFNESS_WRIST_ROLL,
+                ".*_wrist_pitch_joint": STIFFNESS_WRIST_PITCH,
+            },
+            damping={
+                ".*_shoulder_pitch_joint": DAMPING_SHOULDER_PITCH,
+                ".*_shoulder_roll_joint": DAMPING_SHOULDER_ROLL,
+                ".*_shoulder_yaw_joint": DAMPING_SHOULDER_YAW,
+                ".*_elbow_joint": DAMPING_ELBOW,
+                ".*_wrist_yaw_joint": DAMPING_WRIST_YAW,
+                ".*_wrist_roll_joint": DAMPING_WRIST_ROLL,
+                ".*_wrist_pitch_joint": DAMPING_WRIST_PITCH,
+            },
+            armature={
+                ".*_shoulder_pitch_joint": ARMATURE_FOR_PD_SHOULDER_PITCH,
+                ".*_shoulder_roll_joint": ARMATURE_FOR_PD_SHOULDER_ROLL,
+                ".*_shoulder_yaw_joint": ARMATURE_FOR_PD_SHOULDER_YAW,
+                ".*_elbow_joint": ARMATURE_FOR_PD_ELBOW,
+                ".*_wrist_yaw_joint": ARMATURE_FOR_PD_WRIST_YAW,
+                ".*_wrist_roll_joint": ARMATURE_FOR_PD_WRIST_ROLL,
+                ".*_wrist_pitch_joint": ARMATURE_FOR_PD_WRIST_PITCH,
+            },
+        ),
+    },
+    joint_symmetry_mapping=symmetry_utils.mirrored({
+        "left_hip_pitch_joint": (1, "right_hip_pitch_joint"),
+        "left_hip_roll_joint": (-1, "right_hip_roll_joint"),
+        "left_hip_yaw_joint": (-1, "right_hip_yaw_joint"),
+        "left_knee_joint": (1, "right_knee_joint"),
+        "left_ankle_pitch_joint": (1, "right_ankle_pitch_joint"),
+        "left_ankle_roll_joint": (-1, "right_ankle_roll_joint"),
+        "waist_yaw_joint": (-1, "waist_yaw_joint"),
+        "left_shoulder_pitch_joint": (1, "right_shoulder_pitch_joint"),
+        "left_shoulder_roll_joint": (-1, "right_shoulder_roll_joint"),
+        "left_shoulder_yaw_joint": (-1, "right_shoulder_yaw_joint"),
+        "left_elbow_joint": (1, "right_elbow_joint"),
+        "left_wrist_yaw_joint": (-1, "right_wrist_yaw_joint"),
+        "left_wrist_roll_joint": (-1, "right_wrist_roll_joint"),
+        "left_wrist_pitch_joint": (1, "right_wrist_pitch_joint"),
+    }),
+    spatial_symmetry_mapping=symmetry_utils.mirrored({
+        "left_hip_pitch_link": "right_hip_pitch_link",
+        "left_hip_roll_link": "right_hip_roll_link",
+        "left_hip_yaw_link": "right_hip_yaw_link",
+        "left_knee_link": "right_knee_link",
+        "left_ankle_pitch_link": "right_ankle_pitch_link",
+        "left_ankle_roll_link": "right_ankle_roll_link",
+        "base_link": "base_link",
+        "waist_link": "waist_link",
+        "left_shoulder_pitch_link": "right_shoulder_pitch_link",
+        "left_shoulder_roll_link": "right_shoulder_roll_link",
+        "left_shoulder_yaw_link": "right_shoulder_yaw_link",
+        "left_elbow_link": "right_elbow_link",
+        "left_wrist_yaw_link": "right_wrist_yaw_link",
+        "left_wrist_roll_link": "right_wrist_roll_link",
+        "left_wrist_pitch_link": "right_wrist_pitch_link",
+    })
+)
+
+Y1_COL_SELF = copy.deepcopy(Y1_CFG)
+Y1_COL_SELF.spawn.articulation_props.enabled_self_collisions = True

@@ -132,8 +132,10 @@ class MotionDataset:
             
             # Initialize metadata from first motion
             if meta is None:
-                joint_names = m["joint_names"].tolist()
-                body_names = m["body_names"].tolist()
+                # joint_names = m["joint_names"].tolist()
+                # body_names = m["body_names"].tolist()
+                joint_names = m["joint_names"]
+                body_names = m["body_names"]
 
                 sel_joint_names, sel_joint_idx = select_in_order(joint_names, joint_names_keep, return_missing=False)
                 sel_body_names, sel_body_idx = select_in_order(body_names, body_names_keep, return_missing=False)
