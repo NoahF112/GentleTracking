@@ -245,7 +245,10 @@ class TrackingPolicyRaw(Policy):
 
             joint_names = data.get("joint_names", None)
             if joint_names is not None:
-                joint_names = joint_names.tolist()
+                if isinstance(joint_names, list):
+                    pass
+                else:
+                    joint_names = joint_names.tolist()
                 target_names = list(policy_cfg.dataset_joint_names)
                 if joint_names != target_names:
                     name_to_idx = {n: i for i, n in enumerate(joint_names)}

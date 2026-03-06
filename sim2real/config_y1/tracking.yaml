@@ -1,0 +1,151 @@
+# policy_path: "assets/ckpts/G1TRACKING-AMASS/policy.onnx"
+# policy_path: "assets/ckpts/G1TRACKING-01-30_20-57_adapt/policy.onnx"
+# policy_path: "assets/ckpts/G1TRACKING-01-30_20-21/policy.onnx"
+# policy_path: "assets/ckpts/G1TRACKING-02-05_07-26/policy.onnx"
+# policy_path: "assets/ckpts/G1TRACKING-LAFAN/policy.onnx" # Action scale needs to be adjusted when using LAFAN model.
+"policy_path": "assets/ckpts/Y1TRACKING-03-05_20-49/policy.onnx"
+lowstate_alpha: 1.0
+
+motions:
+  - name: "dance1_subject1"
+    path: "assets/y1_lafan1_motions/dance1_subject1.npz"
+    start: 0
+    end: -1
+  - name: "dance1_subject2"
+    path: "assets/y1_lafan1_motions/dance1_subject2.npz"
+    start: 0
+    end: -1
+  - name: "dance2_subject1"
+    path: "assets/y1_lafan1_motions/dance2_subject1.npz"
+    start: 0
+    end: -1
+  - name: "fallAndGetUp1_subject1"
+    path: "assets/y1_lafan1_motions/fallAndGetUp1_subject1.npz"
+    start: 0
+    end: -1
+  - name: "fallAndGetUp2_subject2"
+    path: "assets/y1_lafan1_motions/fallAndGetUp2_subject2.npz"
+    start: 0
+    end: -1
+  - name: "fight1_subject2"
+    path: "assets/y1_lafan1_motions/fight1_subject2.npz"
+    start: 0
+    end: -1
+  - name: "fightAndSports1_subject1"
+    path: "assets/y1_lafan1_motions/fightAndSports1_subject1.npz"
+    start: 0
+    end: -1
+  - name: "jumps1_subject1"
+    path: "assets/y1_lafan1_motions/jumps1_subject1.npz"
+    start: 0
+    end: -1
+  - name: "run1_subject2"
+    path: "assets/y1_lafan1_motions/run1_subject2.npz"
+    start: 0
+    end: -1
+  - name: "run2_subject1"
+    path: "assets/y1_lafan1_motions/run2_subject1.npz"
+    start: 0
+    end: -1
+  - name: "sprint1_subject2"
+    path: "assets/y1_lafan1_motions/sprint1_subject2.npz"
+    start: 0
+    end: -1
+  - name: "walk1_subject1"
+    path: "assets/y1_lafan1_motions/walk1_subject1.npz"
+    start: 0
+    end: -1
+  - name: "walk2_subject1"
+    path: "assets/y1_lafan1_motions/walk2_subject1.npz"
+    start: 0
+    end: -1
+  - name: "walk3_subject1"
+    path: "assets/y1_lafan1_motions/walk3_subject1.npz"
+    start: 0
+    end: -1
+  - name: "pickup_box"
+    path: "assets/y1_accad_female1_motions/A5_-_pick_up_box_stageii.npz"
+    start: 0
+    end: -1
+  - name: "walk_turn_left"
+    path: "assets/y1_accad_female1_walking/B10_-_walk_turn_left_(45)_stageii.npz"
+    start: 0
+    end: -1
+
+motion_clips:
+  - name: "default"
+    joint_pos: [
+      0.0, # Left hip pitch
+      0.0, # Left hip roll
+      0.0, # Left hip yaw
+      0.0, # Left knee
+      0.0, # Left ankle pitch
+      0.0, # Left ankle roll
+      0.0, # Right hip pitch
+      0.0, # Right hip roll
+      0.0, # Right hip yaw
+      0.0, # Right knee
+      0.0, # Right ankle pitch
+      0.0, # Right ankle roll
+      0.0, # Waist yaw
+      0.0, 0.0, 0.0, 1.55, 0.0, 0.0, 0.0,
+      0.0, 0.0, 0.0, 1.55, 0.0, 0.0, 0.0 
+    ]
+    root_quat: [1., 0., 0., 0.]
+    root_pos: [0.0, 0.0, 0.48]
+
+action_alpha: 0.9
+action_clip: 10.0
+adapt_hx_size: 256
+
+action_joint_names: ['left_hip_pitch_joint', 'right_hip_pitch_joint', 'waist_yaw_joint', 'left_hip_roll_joint', 'right_hip_roll_joint', 'left_shoulder_pitch_joint', 'right_shoulder_pitch_joint', 'left_hip_yaw_joint', 'right_hip_yaw_joint', 'left_shoulder_roll_joint', 'right_shoulder_roll_joint', 'left_knee_joint', 'right_knee_joint', 'left_shoulder_yaw_joint', 'right_shoulder_yaw_joint', 'left_ankle_pitch_joint', 'right_ankle_pitch_joint', 'left_elbow_joint', 'right_elbow_joint', 'left_ankle_roll_joint', 'right_ankle_roll_joint', 'left_wrist_roll_joint', 'right_wrist_roll_joint', 'left_wrist_pitch_joint', 'right_wrist_pitch_joint', 'left_wrist_yaw_joint', 'right_wrist_yaw_joint']
+
+# # Problem
+# action_scale: [0.5, 0.5, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0] # LAFAN model action scale
+# action_scale: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0] # AMASS model action scale
+# action_scale: [
+#   0.5,
+#   0.5, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0,
+#   0.5, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0,
+#   0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+#   0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+action_scale: [
+  0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+  0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+  0.5,
+  0.5, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0,
+  0.5, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0,
+]
+
+dataset_joint_names: [ # Same order as defined in training order
+  'left_hip_pitch_joint', 'left_hip_roll_joint', 'left_hip_yaw_joint', 'left_knee_joint', 'left_ankle_pitch_joint', 'left_ankle_roll_joint',
+  'right_hip_pitch_joint', 'right_hip_roll_joint', 'right_hip_yaw_joint', 'right_knee_joint', 'right_ankle_pitch_joint', 'right_ankle_roll_joint',
+  'waist_yaw_joint',
+  'left_shoulder_pitch_joint', 'left_shoulder_roll_joint', 'left_shoulder_yaw_joint', 'left_elbow_joint', 'left_wrist_roll_joint', 'left_wrist_pitch_joint', 'left_wrist_yaw_joint',
+  'right_shoulder_pitch_joint', 'right_shoulder_roll_joint', 'right_shoulder_yaw_joint', 'right_elbow_joint', 'right_wrist_roll_joint', 'right_wrist_pitch_joint', 'right_wrist_yaw_joint',
+]
+
+kps_real: [ # Mujoco Order
+  # waist
+  227.588883, 
+  # left arm
+  126.330936, 126.330936, 7.895684, 126.330936, 2.763489, 2.763489, 2.763489,
+  # right arm
+  126.330936, 126.330936, 7.895684, 126.330936, 2.763489, 2.763489, 2.763489,
+  # left leg
+  125.351872, 227.588883, 227.588883, 256.609714, 92.095253, 92.095253,
+  # right leg
+  125.351872, 227.588883, 227.588883, 256.609714, 92.095253, 92.095253
+]
+kds_real: [
+  # waist
+  14.488758,
+  # left arm
+  8.042477, 8.042477, 0.502655, 8.042477, 0.175929, 0.175929, 0.175929,
+  # right arm
+  8.042477, 8.042477, 0.502655, 8.042477, 0.175929, 0.175929, 0.175929,
+  # left leg
+  7.980148, 14.488758, 14.488758, 16.336282, 5.862966, 5.862966,
+  # right leg
+  7.980148, 14.488758, 14.488758, 16.336282, 5.862966, 5.862966,
+]

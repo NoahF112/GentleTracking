@@ -1,0 +1,108 @@
+#
+control_freq: 50
+
+lowstate_alpha: 1.0
+joint_slew_rate: 100.0
+
+lowcmd_topic: "rt/lowcmd"
+lowstate_topic: "rt/lowstate"
+
+render_gui: true          # Show real-time GUI for debugging
+
+# state always has 29 dof
+isaac_joint_names_state: ['left_hip_pitch_joint', 'right_hip_pitch_joint', 'waist_yaw_joint', 'left_hip_roll_joint', 'right_hip_roll_joint', 'left_shoulder_pitch_joint', 'right_shoulder_pitch_joint', 'left_hip_yaw_joint', 'right_hip_yaw_joint', 'left_shoulder_roll_joint', 'right_shoulder_roll_joint', 'left_knee_joint', 'right_knee_joint', 'left_shoulder_yaw_joint', 'right_shoulder_yaw_joint', 'left_ankle_pitch_joint', 'right_ankle_pitch_joint', 'left_elbow_joint', 'right_elbow_joint', 'left_ankle_roll_joint', 'right_ankle_roll_joint', 'left_wrist_roll_joint', 'right_wrist_roll_joint', 'left_wrist_pitch_joint', 'right_wrist_pitch_joint', 'left_wrist_yaw_joint', 'right_wrist_yaw_joint']
+
+# Real robot joint names
+real_joint_names: [
+  'waist_yaw_joint',
+  'left_shoulder_pitch_joint', 'left_shoulder_roll_joint', 'left_shoulder_yaw_joint', 'left_elbow_joint', 'left_wrist_roll_joint', 'left_wrist_pitch_joint', 'left_wrist_yaw_joint',
+  'right_shoulder_pitch_joint', 'right_shoulder_roll_joint', 'right_shoulder_yaw_joint', 'right_elbow_joint', 'right_wrist_roll_joint', 'right_wrist_pitch_joint', 'right_wrist_yaw_joint',
+  'left_hip_pitch_joint', 'left_hip_roll_joint', 'left_hip_yaw_joint', 'left_knee_joint', 'left_ankle_pitch_joint', 'left_ankle_roll_joint',
+  'right_hip_pitch_joint', 'right_hip_roll_joint', 'right_hip_yaw_joint', 'right_knee_joint', 'right_ankle_pitch_joint', 'right_ankle_roll_joint'
+]
+
+# Mujoco joint names
+mujoco_joint_names: [
+  'waist_yaw_joint',
+  'left_shoulder_pitch_joint', 'left_shoulder_roll_joint', 'left_shoulder_yaw_joint', 'left_elbow_joint', 'left_wrist_roll_joint', 'left_wrist_pitch_joint', 'left_wrist_yaw_joint',
+  'right_shoulder_pitch_joint', 'right_shoulder_roll_joint', 'right_shoulder_yaw_joint', 'right_elbow_joint', 'right_wrist_roll_joint', 'right_wrist_pitch_joint', 'right_wrist_yaw_joint',
+  'left_hip_pitch_joint', 'left_hip_roll_joint', 'left_hip_yaw_joint', 'left_knee_joint', 'left_ankle_pitch_joint', 'left_ankle_roll_joint',
+  'right_hip_pitch_joint', 'right_hip_roll_joint', 'right_hip_yaw_joint', 'right_knee_joint', 'right_ankle_pitch_joint', 'right_ankle_roll_joint'
+]
+
+kps_real: [
+  # waist
+  227.588883, 
+  # left arm
+  126.330936, 126.330936, 7.895684, 126.330936, 2.763489, 2.763489, 2.763489,
+  # right arm
+  126.330936, 126.330936, 7.895684, 126.330936, 2.763489, 2.763489, 2.763489,
+  # left leg
+  125.351872, 227.588883, 227.588883, 256.609714, 92.095253, 92.095253,
+  # right leg
+  125.351872, 227.588883, 227.588883, 256.609714, 92.095253, 92.095253
+]
+kds_real: [
+  # waist
+  14.488758,
+  # left arm
+  8.042477, 8.042477, 0.502655, 8.042477, 0.175929, 0.175929, 0.175929,
+  # right arm
+  8.042477, 8.042477, 0.502655, 8.042477, 0.175929, 0.175929, 0.175929,
+  # left leg
+  7.980148, 14.488758, 14.488758, 16.336282, 5.862966, 5.862966,
+  # right leg
+  7.980148, 14.488758, 14.488758, 16.336282, 5.862966, 5.862966,
+]
+
+default_qpos_real: [
+  # waist
+  0.0,
+  # left arm
+  0.0, 0.0, 0.0, 1.55, 0.0, 0.0, 0.0,
+  # right arm
+  0.0, 0.0, 0.0, 1.55, 0.0, 0.0, 0.0,
+  # left leg
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  # right leg
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+]
+
+init_qpos_real: [
+  # waist
+  0.0,
+  # left arm
+  0.0, 0.0, 0.0, 1.55, 0.0, 0.0, 0.0,
+  # right arm
+  0.0, 0.0, 0.0, 1.55, 0.0, 0.0, 0.0,
+  # left leg
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+  # right leg
+  0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+]
+
+motor_limits_low_real: [
+  # waist
+  -2.878,
+  # left arm
+  -3.140, 0.000, -1.570, -0.698, -2.093, -1.744, -1.570,
+  # right arm
+  -3.140, -2.355, -1.570, -0.698, -2.093, -1.744, -1.570,
+  # left leg
+  -2.616, -0.523, -1.396, 0.000, -0.924, -0.296,
+  # right leg
+  -2.616, -1.919, -1.396, 0.000, -0.924, -0.296
+]
+
+motor_limits_high_real: [
+  # waist
+  2.878,
+  # left arm
+  1.570, 2.355, 1.570, 1.570, 2.093, 1.744, 1.570,
+  # right arm
+  1.570, 0.000, 1.570, 1.570, 2.093, 1.744, 1.570,
+  # left leg
+  2.180, 1.919, 1.396, 2.530, 0.471, 0.296,
+  # right leg
+  2.180, 0.523, 1.396, 2.530, 0.471, 0.296
+]
