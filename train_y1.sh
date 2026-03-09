@@ -4,7 +4,7 @@ set -euo pipefail
 # ===== Global Configuration =====
 # PROJECT="axell-wppr/gentle_humanoid"
 # PROJECT="axell-wppr/motion_tracking"
-PROJECT="ligo125438-tum/gentle_humanoid_y1"
+PROJECT="ligo125438-tum/gentle_humanoid"
 NPROC=1
 SCRIPT="scripts/train.py"
 curr_date=$(date +"%Y%m%d")
