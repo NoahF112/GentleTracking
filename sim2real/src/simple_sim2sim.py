@@ -1,5 +1,5 @@
 import numpy as np
-import simple_observation as observation
+import simple_observation
 import onnxruntime as ort
 import json
 import mujoco
@@ -15,7 +15,17 @@ from typing import Dict, List, Optional, Tuple
 from common.utils import DictToClass, Timer
 from paths import ASSETS_DIR, REAL_G1_ROOT
 
+from scipy.spatial.transform import Rotation as R
+from common.math_utils import (
+    _linspace_rows,
+    _remove_yaw_keep_rp_wxyz,
+    _slerp,
+    _yaw_component_wxyz,
+    _zero_z,
+)
 
+
+# Helper Utilities
 class ONNXModule:
     def __init__(self, path: str):
         self.ort_session = ort.InferenceSession(path, providers=["CPUExecutionProvider"])
@@ -35,7 +45,31 @@ class ONNXModule:
         outputs = {k: v for k, v in zip(self.out_keys, outputs)}
         return outputs
 
+def mapping_joints(data: np.ndarray, target: List[str]):
+    from common.utils import joint_names_29, joint_names_23
+    nums = data.shape[-1]
+    if nums == len(target):
+        return data
+    if nums == 29:
+        current = joint_names_29
+        print("[Mapping] from 29 to 23")
+    elif nums == 23:
+        current = joint_names_23
+        print("[Mapping] from 23 to 29")
+    else:
+        raise ValueError(f"Unsupported number of joints: {nums}")
 
+    new_data = np.zeros((data.shape[0], len(target)), dtype=np.float32)
+    for i, name in enumerate(target):
+        if name in current:
+            new_data[:, i] = data[:, current.index(name)]
+    return new_data.astype(np.float32)
+
+
+from functools import wraps
+
+
+# Main Class
 class Sim2Sim:
     def __init__(self, config, policy_cfg):
         model_path = "assets/g1/g1.xml"
@@ -80,10 +114,10 @@ class Sim2Sim:
         mujoco.mj_forward(self.model, self.data)
 
         # MuJoCo viewer
-        # self.viewer = None
-        # self.renderer = None
-        # self._viewer_tick = 0
-        # self.viewer_decim = max(1, self.low_level_freq // 30)  # Default 30 fps for viewer
+        self.viewer = None
+        self.renderer = None
+        self._viewer_tick = 0
+        self.viewer_decim = max(1, self.low_level_freq // 30)  # Default 30 fps for viewer
 
         
 
@@ -101,6 +135,8 @@ class Sim2Sim:
         self.policy_input = None
         self.last_action = np.zeros(len(self.config.mujoco_joint_names),dtype=np.float32)
 
+        self.dof_size_real = len(self.config.real_joint_names)
+
         self.smoothing_alpha = getattr(self.config, "lowstate_alpha", 0.2)
         self._qj_smooth   = np.zeros(self.dof_size_real, dtype=np.float32)
         self._dqj_smooth  = np.zeros(self.dof_size_real, dtype=np.float32)
@@ -113,6 +149,21 @@ class Sim2Sim:
         self.tau_real = np.zeros(self.dof_size_real, dtype=np.float32)
         self.quat = np.zeros(4, dtype=np.float32)
         self.gyro = np.zeros(3, dtype=np.float32)
+
+        # ---- Reference stream ----------------------------------------------
+        self.ref_joint_pos: Optional[np.ndarray] = None  # (T_ref, J)
+        self.ref_root_quat: Optional[np.ndarray] = None  # (T_ref, 4)
+        self.ref_root_pos: Optional[np.ndarray] = None   # (T_ref, 3)
+
+        # ---- Playback state ------------------------------------------------
+        self.ref_idx: int = 0
+        self.ref_len: int = 0
+        self.current_name: str = "default"
+        self.current_done: bool = True  # boot: default done
+
+        self.n_joints = len(self.policy_cfg.dataset_joint_names)
+
+        self.transition_steps = int(getattr(self.policy_cfg, "transition_steps", 100))
 
     def _load_motions(self):
         self.motions: Dict[str, Dict[str, np.ndarray]] = {}
@@ -155,6 +206,93 @@ class Sim2Sim:
                 "root_quat": root_quat,  # (T,4) wxyz
                 "root_pos": root_pos,    # (T,3)
             }
+        # ---- One-frame motion clips (config provided) ----------------------
+        for m in self.policy_cfg.motion_clips:
+            mc = DictToClass(m)
+            motion_name = mc.name
+            joint_pos_1 = mapping_joints(
+                np.asarray(mc.joint_pos, dtype=np.float32).reshape(1, -1),
+                self.policy_cfg.dataset_joint_names
+            )
+            root_quat_1 = np.asarray(mc.root_quat, dtype=np.float32).reshape(1, 4)
+            root_pos_1 = np.asarray(mc.root_pos, dtype=np.float32).reshape(1, 3)
+
+            self.motions[motion_name] = {
+                "joint_pos": joint_pos_1,  # (1,J)
+                "root_quat": root_quat_1,  # (1,4)
+                "root_pos": root_pos_1,    # (1,3)
+            }
+
+        assert "default" in self.motions, "[TrackingPolicyRaw] motions must include a 'default' clip (length==1)."
+
+    def _read_current_state(self) -> Dict[str, np.ndarray]:
+        q_real = self.qj_real.copy()
+        real_names = list(self.config.real_joint_names)
+        target_names = list(self.policy_cfg.dataset_joint_names)
+        name_to_idx = {n: i for i, n in enumerate(real_names)}
+        q_policy = np.zeros(len(target_names), dtype=np.float32)
+        for i, n in enumerate(target_names):
+            j = name_to_idx.get(n, None)
+            if j is not None and j < q_real.shape[0]:
+                q_policy[i] = q_real[j]
+
+        if self.ref_root_pos is not None:
+            root_pos = self.ref_root_pos[self.ref_idx]
+            root_quat = self.ref_root_quat[self.ref_idx]
+        else:
+            root_pos = np.array([0.0, 0.0, 0.78], dtype=np.float32)
+            root_quat = self.quat.copy()
+        print(root_pos)
+        return {
+            "joint_pos": q_policy.astype(np.float32),
+            "root_pos": root_pos,
+            "root_quat": root_quat,
+        }
+
+    def _align_motion_to_current(
+        self,
+        motion: Dict[str, np.ndarray],
+        curr: Dict[str, np.ndarray],
+    ) -> Dict[str, np.ndarray]:
+        p0 = motion["root_pos"][0]
+        q0_yaw = _yaw_component_wxyz(motion["root_quat"][0])
+        pc = curr["root_pos"]
+        qc_yaw = _yaw_component_wxyz(curr["root_quat"])
+
+        R0 = R.from_quat(q0_yaw, scalar_first=True)
+        Rc = R.from_quat(qc_yaw, scalar_first=True)
+        R_delta = Rc * R0.inv()
+
+        root_pos_aligned = R_delta.apply(motion["root_pos"] - p0) + pc
+        root_pos_aligned[:, 2] = motion["root_pos"][:, 2]  # keep original z
+
+        root_quat_all = R.from_quat(motion["root_quat"], scalar_first=True)
+        root_quat_aligned = (R_delta * root_quat_all).as_quat(scalar_first=True)
+
+        return {
+            "joint_pos": motion["joint_pos"].astype(np.float32).copy(),
+            "root_quat": root_quat_aligned.astype(np.float32),
+            "root_pos": root_pos_aligned.astype(np.float32),
+        }
+
+    def _build_transition_prefix(
+        self,
+        curr: Dict[str, np.ndarray],
+        tgt_first: Dict[str, np.ndarray],
+    ) -> Dict[str, np.ndarray]:
+        T = int(self.transition_steps)
+        if T <= 0:
+            raise ValueError("[TrackingPolicyRaw] transition_steps must be > 0")
+
+        joints_tr = _linspace_rows(curr["joint_pos"], tgt_first["joint_pos"], T)
+        root_pos_tr = _linspace_rows(curr["root_pos"], tgt_first["root_pos"], T)
+        root_quat_tr = _slerp(curr["root_quat"], tgt_first["root_quat"], T)
+
+        return {
+            "joint_pos": joints_tr,
+            "root_quat": root_quat_tr,
+            "root_pos": root_pos_tr,
+        }
 
     def _start_motion_from_current(self, name: str):
         assert name in self.motions
@@ -222,7 +360,7 @@ class Sim2Sim:
         pass
 
     def _build_obs_modules(self):
-        from observation import (
+        from simple_observation import (
             TrackingCommandObsRaw,
             TargetRootZObs,
             TargetJointPosObs,
@@ -247,6 +385,11 @@ class Sim2Sim:
         self.num_obs = sum(m.size for m in self.obs_modules)
 
     def _update_obs(self):
+        if self.ref_len > 0 and self.ref_idx < self.ref_len - 1:
+            self.ref_idx += 1
+            if self.ref_idx == self.ref_len - 1:
+                self.current_done = True
+
         obs_list = []
         for m in self.obs_modules:
             m.update()
@@ -259,7 +402,18 @@ class Sim2Sim:
         else:
             self.policy_input["policy"][0, :] = np.concatenate(obs_list, axis=0)
 
-    def run(self):
+    def _viewer_sync(self) -> bool:
+        if self.viewer is None:
+            return True
+        if not self.viewer.is_running():
+            self.is_alive = False
+            return False
+        self._viewer_tick += 1
+        if (self._viewer_tick % self.viewer_decim) == 0:
+            self.viewer.sync()
+        return True
+
+    def run(self, cbk=None):
         cnt = 0
         with mujoco.viewer.launch_passive(
             self.model,
@@ -267,21 +421,28 @@ class Sim2Sim:
             show_left_ui=False,
             show_right_ui=False,
         ) as viewer:
-            # self.viewer = viewer
+            self.viewer = viewer
+            timer = Timer(self.low_level_dt)
+            self.freqs = []
             while viewer.is_running():
-
                 if cnt % self.decimation == 0:
                     self._collect_state_variables()
 
                     self._update_obs()
                     out = self.module(self.policy_input)
+
                     action_isaac = out["action"].copy()[0].astype(np.float32).clip(-self.action_clip, self.action_clip)
+                    self.last_action[:] = action_isaac
                     applied_action_isaac = action_isaac * self.action_scale_isaac
                     action_real = self.isaac_to_real_mapper_state.map_action_from_to(applied_action_isaac)
+                    self.policy_input["is_init"][:] = False
                     desired = action_real + self.default_qpos_real
                     self.__ptargets_real = desired
+                    cnt = 0
 
                 cnt += 1
+                if cbk is not None:
+                    cbk()
 
                 ptargets_mujoco = self.real_to_mujoco_mapper.map_action_from_to(self.__ptargets_real)
                 kp_mujoco = self.real_to_mujoco_mapper.map_action_from_to(self.__kp_real)
@@ -294,9 +455,16 @@ class Sim2Sim:
                 self.data.ctrl[:] = ctrl
                 mujoco.mj_step(self.model, self.data)
                 
-                viewer.sync()
+                self._viewer_sync()
+                timer.sleep()
                 pass
 
+    def save_log(self):
+        freqs = np.array(self.freqs)
+        from datetime import datetime
+        now = datetime.now().strftime("%H%M%S")
+        np.save(f"./temp/{now}.npy", freqs)
+        print("log saved")
 
 def main():
     config_path = "config/controller.yaml"
@@ -304,8 +472,25 @@ def main():
     policy_config_path = "config/tracking.yaml"
     policy_cfg = DictToClass(yaml.load(open(str(policy_config_path), 'r'), Loader=yaml.FullLoader))
     sim2sim = Sim2Sim(cfg, policy_cfg)
-    sim2sim.run()
-    pass
+    sim2sim._collect_state_variables()
+    sim2sim._start_motion_from_current("default")
+    # sim2sim._start_motion_from_current("dance1_subject1")
+    # sim2sim._start_motion_from_current("lift_box1")
+    # sim2sim._start_motion_from_current("jumps1_subject1")
+
+    def foo1():
+        def foo2():
+            if foo2.cnt == 2500:
+                print("Started ref motion")
+                # sim2sim._start_motion_from_current("lift_box1")
+                # sim2sim._start_motion_from_current("jumps1_subject1")
+                sim2sim._start_motion_from_current("dance1_subject1")
+            foo2.cnt += 1
+            pass
+        foo2.cnt = 0
+        return foo2
+    sim2sim.run(cbk=foo1())
+
 
 if __name__ == "__main__":
     main()
