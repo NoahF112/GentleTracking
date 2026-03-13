@@ -423,7 +423,6 @@ class Sim2Sim:
         ) as viewer:
             self.viewer = viewer
             timer = Timer(self.low_level_dt)
-            self.freqs = []
             while viewer.is_running():
                 if cnt % self.decimation == 0:
                     self._collect_state_variables()
@@ -459,12 +458,6 @@ class Sim2Sim:
                 timer.sleep()
                 pass
 
-    def save_log(self):
-        freqs = np.array(self.freqs)
-        from datetime import datetime
-        now = datetime.now().strftime("%H%M%S")
-        np.save(f"./temp/{now}.npy", freqs)
-        print("log saved")
 
 def main():
     config_path = "config/controller.yaml"
@@ -474,16 +467,11 @@ def main():
     sim2sim = Sim2Sim(cfg, policy_cfg)
     sim2sim._collect_state_variables()
     sim2sim._start_motion_from_current("default")
-    # sim2sim._start_motion_from_current("dance1_subject1")
-    # sim2sim._start_motion_from_current("lift_box1")
-    # sim2sim._start_motion_from_current("jumps1_subject1")
 
     def foo1():
         def foo2():
             if foo2.cnt == 2500:
                 print("Started ref motion")
-                # sim2sim._start_motion_from_current("lift_box1")
-                # sim2sim._start_motion_from_current("jumps1_subject1")
                 sim2sim._start_motion_from_current("dance1_subject1")
             foo2.cnt += 1
             pass
