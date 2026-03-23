@@ -12,3 +12,14 @@ Changed y1 armature for tuning PD parameters
 
 - ARMATURE_FOR_PD_ANKLE_PITCH: 0.5 * 0.023328 -> 0.023328
 - ARMATURE_FOR_PD_ANKLE_ROLL = 0.5 * 0.023328 -> 0.023328
+
+### 20260319
+Restore previous changes, then apply new changes:
+
+```python
+NATURAL_FREQ = 5 * 2.0 * 3.1415926535  # 5Hz
+NATURAL_FREQ_FOR_HIP_PITCH = 3.5 * 2.0 * 3.1415926535  # 3.5Hz
+NATURAL_FREQ_FOR_KNEE = 3.5 * 2.0 * 3.1415926535  # 3.5Hz
+NATURAL_FREQ_FOR_ANKLE = 15 * 2.0 * 3.1415926535  # 15Hz
+```
+DAMPING_RATIO = 2.
