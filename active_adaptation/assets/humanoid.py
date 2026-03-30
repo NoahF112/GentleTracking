@@ -252,20 +252,14 @@ ARMATURE_WRIST_PITCH = 0.0007
 ARMATURE_WRIST_YAW = 0.0007
 
 ARMATURE_FOR_PD_WAIST_YAW = 0.5 * 0.0576489375
-# ARMATURE_FOR_PD_HIP_PITCH = 0.5 * 0.031752
-ARMATURE_FOR_PD_HIP_PITCH = 0.25 * 0.031752
+ARMATURE_FOR_PD_HIP_PITCH = 0.5 * 0.031752
 ARMATURE_FOR_PD_HIP_ROLL = 0.5 * 0.0576489375
 ARMATURE_FOR_PD_HIP_YAW = 0.5 * 0.0576489375
-# ARMATURE_FOR_PD_KNEE = 0.5 * 0.065
-ARMATURE_FOR_PD_KNEE = 0.25 * 0.065
-# ARMATURE_FOR_PD_ANKLE_PITCH = 0.5 * 0.023328
-# ARMATURE_FOR_PD_ANKLE_ROLL = 0.5 * 0.023328
-ARMATURE_FOR_PD_ANKLE_PITCH = 0.023328
-ARMATURE_FOR_PD_ANKLE_ROLL = 0.023328
-# ARMATURE_FOR_PD_SHOULDER_PITCH = 0.5 * 0.032
-# ARMATURE_FOR_PD_SHOULDER_ROLL = 0.5 * 0.032
-ARMATURE_FOR_PD_SHOULDER_PITCH = 0.032
-ARMATURE_FOR_PD_SHOULDER_ROLL = 0.032
+ARMATURE_FOR_PD_KNEE = 0.5 * 0.065
+ARMATURE_FOR_PD_ANKLE_PITCH = 0.5 * 0.023328
+ARMATURE_FOR_PD_ANKLE_ROLL = 0.5 * 0.023328
+ARMATURE_FOR_PD_SHOULDER_PITCH = 0.5 * 0.032
+ARMATURE_FOR_PD_SHOULDER_ROLL = 0.5 * 0.032
 ARMATURE_FOR_PD_SHOULDER_YAW = 0.002
 ARMATURE_FOR_PD_ELBOW = 0.5 * 0.032
 ARMATURE_FOR_PD_WRIST_ROLL = 0.0007
@@ -370,16 +364,16 @@ Y1_CFG = ArticulationCfg(
                 ".*_knee_joint",
             ],
             effort_limit_sim={
-                ".*_hip_pitch_joint": 60.0,
-                ".*_hip_roll_joint": 36.0,
-                ".*_hip_yaw_joint": 36.0,
-                ".*_knee_joint": 60.0,
+                ".*_hip_pitch_joint": 90.0,
+                ".*_hip_roll_joint": 70.0,
+                ".*_hip_yaw_joint": 70.0,
+                ".*_knee_joint": 120.0,
             },
             velocity_limit_sim={
-                ".*_hip_pitch_joint": 16.5,
-                ".*_hip_roll_joint": 11,
-                ".*_hip_yaw_joint": 11,
-                ".*_knee_joint": 16.5,
+                ".*_hip_pitch_joint": 16.22,
+                ".*_hip_roll_joint": 12.85,
+                ".*_hip_yaw_joint": 12.85,
+                ".*_knee_joint": 11.2,
             },
             stiffness={
                 ".*_hip_pitch_joint": STIFFNESS_HIP_PITCH,
@@ -402,14 +396,8 @@ Y1_CFG = ArticulationCfg(
         ),
         "feet": ImplicitActuatorCfg(
             joint_names_expr=[".*_ankle_pitch_joint", ".*_ankle_roll_joint"],
-            effort_limit_sim={
-                ".*_ankle_pitch_joint": 36.0,
-                ".*_ankle_roll_joint": 14.0,
-            },
-            velocity_limit_sim={
-                ".*_ankle_pitch_joint": 11,
-                ".*_ankle_roll_joint": 16,
-            },
+            effort_limit_sim=50.0,
+            velocity_limit_sim=7.0,
             stiffness={
                 ".*_ankle_pitch_joint": STIFFNESS_ANKLE_PITCH,
                 ".*_ankle_roll_joint": STIFFNESS_ANKLE_ROLL,
@@ -424,8 +412,8 @@ Y1_CFG = ArticulationCfg(
             },
         ),
         "waist": ImplicitActuatorCfg(
-            effort_limit_sim=36.0,
-            velocity_limit_sim=11,
+            effort_limit_sim=70.0,
+            velocity_limit_sim=12.85,
             joint_names_expr=["waist_yaw_joint"],
             stiffness=STIFFNESS_WAIST_YAW,
             damping=DAMPING_WAIST_YAW,
@@ -441,8 +429,25 @@ Y1_CFG = ArticulationCfg(
                 ".*_wrist_roll_joint",
                 ".*_wrist_yaw_joint",
             ],
-            effort_limit_sim=14.0,
-            velocity_limit_sim=16,
+            effort_limit_sim={
+                ".*_shoulder_pitch_joint": 27.0,
+                ".*_shoulder_roll_joint": 27.0,
+                ".*_shoulder_yaw_joint": 12.5,
+                ".*_elbow_joint": 27.0,
+                ".*_wrist_roll_joint": 5.5,
+                ".*_wrist_pitch_joint": 5.5,
+                ".*_wrist_yaw_joint": 5.5,
+            },
+            velocity_limit_sim={
+                ".*_shoulder_pitch_joint": 3.768,
+                ".*_shoulder_roll_joint": 3.768,
+                ".*_shoulder_yaw_joint": 12.5,
+                ".*_elbow_joint": 3.768,
+                ".*_wrist_roll_joint": 10.46,
+                ".*_wrist_pitch_joint": 10.46,
+                ".*_wrist_yaw_joint": 10.46,
+
+            },
             stiffness={
                 ".*_shoulder_pitch_joint": STIFFNESS_SHOULDER_PITCH,
                 ".*_shoulder_roll_joint": STIFFNESS_SHOULDER_ROLL,
